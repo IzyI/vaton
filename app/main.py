@@ -9,7 +9,7 @@ from app.api.user.router import login_user, router_user
 from app.config.settings import (ALLOWED_HOSTS, API_V1_STR, DB_MAX_OVERFLOW,
                                  DB_POOL_SIZE, DB_TIMEOUT, PROJECT_NAME,
                                  SQLALCHEMY_DATABASE_URI, VERSION)
-from app.core.db.database import create_engine_async_app
+from app.core.db.databases import create_engine_async_app
 from app.core.exception.core_except import (BaseLogicException,
                                             http_base_logic_exception_handler,
                                             validation_exception_handler)
@@ -82,7 +82,7 @@ def create_app() -> FastAPI:
         response = await call_next(request)
         process_time = time.time() - start_time
         response.headers["X-Process-Time"] = str(process_time)
-        return
+        return response
 
     return node
 

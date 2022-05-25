@@ -2,6 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
+
 # ----------------- BASE  ----------------------
 
 
@@ -29,6 +30,11 @@ class BaseUpdateUserDevice(BaseModel):
 class BaseUser(BaseModel):
     email: str = Field(..., max_length=250)
     password: str = Field(..., max_length=250)
+
+
+class BaseUserNote(BaseModel):
+    email: str = Field(..., max_length=250)
+    text: Optional[str]
 
 
 class BaseUserInfo(BaseModel):

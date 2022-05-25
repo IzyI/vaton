@@ -10,7 +10,7 @@ from sqlalchemy.orm import relationship, selectinload
 from app.api.user.schemas import (BaseUpdateUserDevice, BaseUser,
                                   BaseUserDevice, BaseUserInfo, BaseUserRole)
 from app.core.db.base_class import Base
-from app.core.db.base_crud import CRUDBase
+from app.core.db.base_crud import CrudBase
 
 association_user_role = Table(
     "association_user_role",
@@ -95,7 +95,7 @@ class VUserRole(Base):
         return f"User Role(id={self.id},role={self.role})"
 
 
-class DecorCRUDUser(CRUDBase[VUser, BaseUser, BaseUser]):
+class DecorCrudUser(CrudBase[VUser, BaseUser, BaseUser]):
     def __init__(self, model: Type[VUser]):
         super().__init__(model)  # noqa
         self.user = None
@@ -110,29 +110,29 @@ class DecorCRUDUser(CRUDBase[VUser, BaseUser, BaseUser]):
         return self.user
 
     async def get_user_by_email_with_device(
-        self, db: AsyncSession, email: str
+            self, db: AsyncSession, email: str
     ) -> Optional[VUser]:
         """
         Get User model by email.
         """
         user = await db.execute(
             select(self.model)
-            .options(selectinload(self.model.devices))
-            .filter(VUser.email == email)
+                .options(selectinload(self.model.devices))
+                .filter(VUser.email == email)
         )
         self.user = user.scalars().first()
         return self.user
 
     async def authenticate_user(
-        self, db: AsyncSession, email: str, password: str
+            self, db: AsyncSession, email: str, password: str
     ) -> Optional[VUser]:
         """
         Get User model by email.
         """
         user = await db.execute(
             select(self.model)
-            .filter(VUser.email == email)
-            .filter(VUser.password == password)
+                .filter(VUser.email == email)
+                .filter(VUser.password == password)
         )
         self.user = user.scalars().first()
         return self.user
@@ -154,7 +154,7 @@ class DecorCRUDUser(CRUDBase[VUser, BaseUser, BaseUser]):
         await db.commit()
 
 
-class DecorCRUDUserRole(CRUDBase[VUserRole, BaseUserRole, BaseUserRole]):
+class DecorCrudUserRole(CrudBase[VUserRole, BaseUserRole, BaseUserRole]):
     def __init__(self, model: Type[VUserRole]):
         super().__init__(model)  # noqa
 
@@ -163,7 +163,7 @@ class DecorCRUDUserRole(CRUDBase[VUserRole, BaseUserRole, BaseUserRole]):
         return user_role.scalars().first()
 
 
-class DecorCRUDUserDevice(CRUDBase[VUserDevice, BaseUserDevice, BaseUpdateUserDevice]):
+class DecorCrudUserDevice(CrudBase[VUserDevice, BaseUserDevice, BaseUpdateUserDevice]):
     def __init__(self, model: Type[VUserDevice]):
         super().__init__(model)  # noqa
 
@@ -174,7 +174,7 @@ class DecorCRUDUserDevice(CRUDBase[VUserDevice, BaseUserDevice, BaseUpdateUserDe
         return user_role.scalars().first()
 
 
-CRUDUser: DecorCRUDUser = DecorCRUDUser(VUser)
-CRUDUserInfo: CRUDBase = CRUDBase[VUserInfo, BaseUserInfo, BaseUserInfo](VUserInfo)
-CRUDUserRole: DecorCRUDUserRole = DecorCRUDUserRole(VUserRole)
-CRUDUserDevice: DecorCRUDUserDevice = DecorCRUDUserDevice(VUserDevice)
+CrudUser = DecorCrudUser(VUser)
+CrudUserInfo = CrudBase[VUserInfo, BaseUserInfo, BaseUserInfo](VUserInfo)
+CrudUserRole = DecorCrudUserRole(VUserRole)
+CrudUserDevice = DecorCrudUserDevice(VUserDevice)

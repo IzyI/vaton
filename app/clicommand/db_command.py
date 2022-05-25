@@ -2,7 +2,7 @@ import click
 
 from app.aiembic_import import Base
 from app.config.settings import SQLALCHEMY_DATABASE_URI
-from app.core.db.database import create_engine_async_app
+from app.core.db.databases import create_engine_async_app
 from app.core.utils.base import coro
 
 

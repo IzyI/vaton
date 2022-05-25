@@ -7,13 +7,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.types import TypeEngine
 
-# from odmantic import AIOEngine, Model
 ModelType = TypeVar("ModelType", bound=TypeEngine)
 CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
 UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
 
 
-class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
+class CrudBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     def __init__(self, model: Type[ModelType]):
         self.model = model
 
@@ -76,13 +75,3 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     async def remove(self, db: AsyncSession, *, id: int):
         await db.execute(delete(self.model).where(self.model.id == id))
         await db.commit()
-
-
-class CRUDmongoBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
-    def __init__(self, model: Type[ModelType]):
-        self.model = model
-
-    async def get(self, db: AsyncSession, id: Any) -> Optional[ModelType]:
-        result = await db.execute(select(self.model).filter(self.model.id == id))
-        result = result.scalars().first()
-        return result

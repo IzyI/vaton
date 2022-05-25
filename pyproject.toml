@@ -25,7 +25,7 @@ python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 fastapi = "^0.75.2"
 zxcvbn = "^4.4.28"
 cryptocode = "^0.1"
-odmantic = "^0.4.0"
+motor = "^3.0.0"
 
 [tool.poetry.dev-dependencies]
 

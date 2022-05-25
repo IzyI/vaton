@@ -10,11 +10,11 @@ from app.config.settings import (ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM,
                                  SECRET_ID)
 from app.core.utils.secur import check_time_jwt, decode_jwt, encode_jwt
 
-from .models import CRUDUser, VUser, VUserDevice
+from .models_sql import CrudUser, VUser, VUserDevice
 
 
 async def set_token(db: AsyncSession, user: VUser, token: Optional[str] = None):
-    if not await CRUDUser.update(db, db_obj=user, obj_in={"token": token}):
+    if not await CrudUser.update(db, db_obj=user, obj_in={"token": token}):
         raise HTTPException(status_code=HTTP_401_UNAUTHORIZED, detail="Not authorized")
 
 
@@ -36,7 +36,7 @@ async def get_user_device(
         user_base = cryptocode.decrypt(payload.get("id"), SECRET_ID).split("/")
     except Exception:
         raise HTTPException(status_code=HTTP_401_UNAUTHORIZED, detail="Very bad")
-    user = await CRUDUser.get_user_by_email_with_device(db, user_base[0])
+    user = await CrudUser.get_user_by_email_with_device(db, user_base[0])
     if not user:
         raise HTTPException(
             status_code=HTTP_401_UNAUTHORIZED, detail="Not authorized, user"
