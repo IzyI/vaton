@@ -5,16 +5,17 @@ from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.status import HTTP_401_UNAUTHORIZED
 
+from app.api.user.dbmodel.vaton_user import VUser
+from app.api.user.dbmodel.vaton_user_device import VUserDevice
+from app.api.user.model.m_user import ModelUser
 from app.config.settings import (ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM,
                                  REFRESH_TOKEN_EXPIRE_MINUTES, SECRET,
                                  SECRET_ID)
 from app.core.utils.secur import check_time_jwt, decode_jwt, encode_jwt
 
-from .models_sql import CrudUser, VUser, VUserDevice
-
 
 async def set_token(db: AsyncSession, user: VUser, token: Optional[str] = None):
-    if not await CrudUser.update(db, db_obj=user, obj_in={"token": token}):
+    if not await ModelUser(VUser).update(db, db_obj=user, obj_in={"token": token}):
         raise HTTPException(status_code=HTTP_401_UNAUTHORIZED, detail="Not authorized")
 
 
@@ -36,7 +37,7 @@ async def get_user_device(
         user_base = cryptocode.decrypt(payload.get("id"), SECRET_ID).split("/")
     except Exception:
         raise HTTPException(status_code=HTTP_401_UNAUTHORIZED, detail="Very bad")
-    user = await CrudUser.get_user_by_email_with_device(db, user_base[0])
+    user = await ModelUser(VUser).get_user_by_email_with_device(db, user_base[0])
     if not user:
         raise HTTPException(
             status_code=HTTP_401_UNAUTHORIZED, detail="Not authorized, user"
@@ -51,7 +52,6 @@ async def get_user_device(
 
 
 async def get_token(user: VUser) -> Tuple[str, str]:
-    print(user.user_role)
     id = cryptocode.encrypt(
         f"{user.email}/{user.id}/{user.user_role[0].role}", SECRET_ID
     )

@@ -13,7 +13,7 @@ from app.config.settings import (MONGO_DB, MONGO_HOST, MONGO_PASSWORD,
 
 # sql
 def create_engine_async_app(
-        db_url: str, pool_size: int = 5, max_overflow: int = 5, pool_timeout: int = 30
+    db_url: str, pool_size: int = 5, max_overflow: int = 5, pool_timeout: int = 30
 ) -> Tuple[AsyncEngine, AsyncSession]:
     async_engine = create_async_engine(
         db_url,
@@ -43,8 +43,11 @@ async def get_db(request: Request) -> AsyncGenerator:
 
 # MongoDB
 
+
 async def get_mongo_db() -> AsyncIOMotorClient:
-    link = f"mongodb://{MONGO_USER}:{MONGO_PASSWORD}@{MONGO_HOST}:{MONGO_PORT}/{MONGO_DB}"
+    link = (
+        f"mongodb://{MONGO_USER}:{MONGO_PASSWORD}@{MONGO_HOST}:{MONGO_PORT}/{MONGO_DB}"
+    )
     client = AsyncIOMotorClient(link)
     try:
         yield client

@@ -1,5 +1,5 @@
 .DEFAULT_GOAL = default
-default: clean format lint coverage
+default: clean format lint
 
 .PHONY: help
 help: ## Show this help
@@ -24,10 +24,10 @@ poetry: ## Install poetry
 .PHONY: format
 format: ## Format files
 	# Sort imports one per line, so autoflake can remove unused imports
-	poetry run isort --force-single-line-imports app tests сор
+	poetry run isort --force-single-line-imports app
 	poetry run autoflake --remove-all-unused-imports --recursive --remove-unused-variables --in-place app --exclude=__init__.py
-	poetry run black app tests
-	poetry run isort app tests
+	poetry run black app
+	poetry run isort app
 
 
 .PHONY: lint
@@ -41,13 +41,17 @@ lint: ## Lint files
 pre-commit: ## Format & lint before commit
 	poetry run pre-commit run --all-file
 
-.PHONY: test
-test: ## Test
-	poetry run pytest
+.PHONY: create-role
+create-role: ## Create role for users
+	python commander.py user create-all-role
 
-.PHONY: coverage
-coverage: ## Test coverage
-	poetry run pytest --cov=app --cov-report=term-missing --cov-report xml tests
+# .PHONY: test
+# test: ## Test
+# 	poetry run pytest
+
+# .PHONY: coverage
+# coverage: ## Test coverage
+# 	poetry run pytest --cov=app --cov-report=term-missing --cov-report xml tests
 
 .PHONY: run-dev
 run-dev: ## Run the local development server

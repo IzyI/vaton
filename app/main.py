@@ -4,11 +4,12 @@ from fastapi import APIRouter, Depends, FastAPI, Header, Request
 from fastapi.exceptions import HTTPException, RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.user.authorize import JWTBearer
-from app.api.user.router import login_user, router_user
+from app.api.user.router_login_user import login_user
+from app.api.user.router_user import user
 from app.config.settings import (ALLOWED_HOSTS, API_V1_STR, DB_MAX_OVERFLOW,
                                  DB_POOL_SIZE, DB_TIMEOUT, PROJECT_NAME,
                                  SQLALCHEMY_DATABASE_URI, VERSION)
+from app.core.authorize import JWTBearer
 from app.core.db.databases import create_engine_async_app
 from app.core.exception.core_except import (BaseLogicException,
                                             http_base_logic_exception_handler,
@@ -48,12 +49,13 @@ def create_app() -> FastAPI:
     # ----
 
     node.include_router(login_user, prefix=f"/api/{API_V1_STR}")
-    admin_route = APIRouter(prefix="/user")
-    admin_route.include_router(router_user)
+    # ----
+    user_route = APIRouter(prefix="/user")
+    user_route.include_router(user)
 
     # ----
     node.include_router(
-        admin_route, prefix=f"/api/{API_V1_STR}", dependencies=[Depends(JWTBearer())]
+        user_route, prefix=f"/api/{API_V1_STR}", dependencies=[Depends(JWTBearer())]
     )
 
     @node.get("/ping", tags=["check"], response_model=PingShema)

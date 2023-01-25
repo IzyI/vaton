@@ -2,7 +2,6 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
-
 # ----------------- BASE  ----------------------
 
 
@@ -15,7 +14,7 @@ class Device(BaseModel):
 class BaseUserDevice(Device):
     id_user: int
     token: str
-    ip: str
+    ip: Optional[str]
 
 
 class BaseUpdateUserDevice(BaseModel):

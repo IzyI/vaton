@@ -6,12 +6,12 @@ from app.core.db.databases import create_engine_async_app
 from app.core.utils.base import coro
 
 
-@click.group()
+@click.group(help="Common commands for working with the database")
 def db():
     pass
 
 
-@db.command()
+@db.command(help="Create all table in db")
 @coro
 async def create_all_table():
     engine, session = create_engine_async_app(SQLALCHEMY_DATABASE_URI)
@@ -19,7 +19,7 @@ async def create_all_table():
         await conn.run_sync(Base.metadata.create_all)
 
 
-@db.command()
+@db.command(help="Delete all table in db")
 @coro
 async def delete_all_table():
     engine, session = create_engine_async_app(SQLALCHEMY_DATABASE_URI)

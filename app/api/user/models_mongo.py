@@ -1,6 +1,6 @@
 from app.core.db.mongo_db_layer import MongoLayer
+
 from .schemas import BaseUserNote
-from typing import Any, Dict, Generic, List, Optional, Type, TypeVar, Union
 
 
 class Note(MongoLayer):

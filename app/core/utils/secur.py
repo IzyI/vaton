@@ -1,6 +1,7 @@
 import base64
 import re
 from datetime import datetime, timedelta
+from typing import Optional
 
 from jose import jwt
 from passlib.context import CryptContext
@@ -117,7 +118,9 @@ def is_password_regex(password: str) -> tuple:
     return True, None
 
 
-def is_password_weak(password: str, email: str = None, username: str = None):
+def is_password_weak(
+    password: str, email: Optional[str] = None, username: Optional[str] = None
+):
     kwargs = {}
     if email:
         kwargs.update({"user_inputs": [email, username]})

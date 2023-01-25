@@ -13,18 +13,22 @@ DB_TYPE: str = os.environ.get("DB_TYPE", "postgres")
 CLICKHOUSE_HOST: str = os.environ.get("CLICKHOUSE_HOST", "localhost")
 CLICKHOUSE_USER: str = os.environ.get("CLICKHOUSE_USER", "user")
 CLICKHOUSE_DB: str = os.environ.get("CLICKHOUSE_DB", "db")
-CLICKHOUSE_PASSWORD: str = os.environ.get("CLICKHOUSE_PASSWORD", "pass")
+CLICKHOUSE_PASSWORD: str = os.environ.get(
+    "CLICKHOUSE_PASSWORD", "twer2c37feycwvdodcvcRXUtr"
+)
 
 MONGO_HOST: str = os.environ.get("MONGO_HOST", "localhost")
 MONGO_USER: str = os.environ.get("CLICKHOUSE_USER", "user")
 MONGO_DB: str = os.environ.get("CLICKHOUSE_DB", "db")
-MONGO_PASSWORD: str = os.environ.get("MONGO_PASSWORD", "pass")
+MONGO_PASSWORD: str = os.environ.get("MONGO_PASSWORD", "twer2c37feycwvdodcvcRXUtr")
 MONGO_PORT: str = os.environ.get("MONGO_PASSWORD", "27017")
 
 POSTGRES_HOST: str = os.environ.get("POSTGRES_HOST", "localhost")
 POSTGRES_PORT: str = os.environ.get("POSTGRES_PORT", "5432")
 POSTGRES_USER: str = os.environ.get("POSTGRES_USER", "user")
-POSTGRES_PASSWORD: str = os.environ.get("POSTGRES_PASSWORD", "pass")
+POSTGRES_PASSWORD: str = os.environ.get(
+    "POSTGRES_PASSWORD", "twer2c37feycwvdodcvcRXUtr"
+)
 POSTGRES_DB: str = os.environ.get("POSTGRES_DB", "db")
 
 DB_TIMEOUT: int = int(os.environ.get("DB_TIMEOUT", 20))

@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
 
-  clickhouse_server:
+  clickhouse_vaton_server:
     container_name: clickhouse_vaton
     image: yandex/clickhouse-server
     restart: always
@@ -19,7 +19,7 @@ services:
       nofile:
         soft: 262144
         hard: 262144
-  mongo:
+  mongo_vaton_server:
     container_name: mongo_vaton
     image: mongo:latest
     restart: always
@@ -28,8 +28,8 @@ services:
     env_file:
       - bd.env
     volumes:
-        - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-  db:
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+  postgres_vaton_server:
     image: postgres:latest
     container_name: postgres_vaton
     restart: always

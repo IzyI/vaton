@@ -1,7 +1,7 @@
 from typing import Any, Optional
 
 from bson.objectid import ObjectId
-from motor.motor_asyncio import AsyncIOMotorCollection
+from motor.motor_asyncio import AsyncIOMotorCollection, AsyncIOMotorClient
 
 from app.config.settings import MONGO_DB
 
@@ -11,7 +11,7 @@ class MongoLayer:
 
     def __init__(
             self,
-            client,
+            client: AsyncIOMotorClient,
     ) -> None:
         self.client = client
         self.database = self.client.get_database(MONGO_DB)
@@ -21,11 +21,13 @@ class MongoLayer:
         filters = await self._convert_filters(filters)
         return await collection.find_one(filters)
 
-    async def get_multi(self, filters: dict, skip: int = 0, limit: Optional[int] = None) -> list[dict]:
+    async def get_multi(
+            self, filters: dict, skip: int = 0, limit: Optional[int] = None
+    ) -> list[dict]:
         collection = await self._get_collection()
         filters = await self._convert_filters(filters)
         cursor = collection.find(filters)
-        cursor.sort('_id', -1)
+        cursor.sort("_id", -1)
         result = []
         if limit:
             cursor.skip(skip).limit(limit)
