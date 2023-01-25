@@ -7,6 +7,7 @@ Full authorisation with JWT-token is implemented.
 The User and Role functions are implemented.  
 __SqlAlchemy__ for *Postgresql* is used as orm.  
 We have a Small Model with *MongoBD* attached to it. __AsyncMotor__ is used as a driver.  
+
 --- 
 ### Before starting work, it is necessary to !!!!!!!! 
 
