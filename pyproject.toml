@@ -1,0 +1,53 @@
+[tool.poetry]
+name = "vaton"
+version = "0.1.0"
+description = ""
+
+[tool.poetry.dependencies]
+python = "^3.9"
+isort = "^5.10.1"
+autoflake = "^1.4"
+black = "^22.3.0"
+bandit = "^1.7.4"
+safety = "^1.10.3"
+pytest = "^7.1.1"
+alembic = "^1.7.7"
+PyJWT = "^2.3.0"
+types-toml = "^0.10.4"
+passlib = "^1.7.4"
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+zxcvbn = "^4.4.28"
+cryptocode = "^0.1"
+motor = "^3.0.0"
+fastapi = "^0.89.1"
+flake8 = "^6.0.0"
+uvicorn = "^0.20.0"
+mypy = "^0.991"
+asyncpg = "^0.27.0"
+sqlalchemy = "^1.4.46"
+bcrypt = "^4.0.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+python_version = "3.9"
+exclude = [
+    '^app/alembic/*',
+]
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = [
+    "sqlalchemy.*",
+    "base_class",
+    "sqlalchemy",
+    "jose",
+    "motor.motor_asyncio",
+    'passlib.context',
+    'cryptocode',
+    'zxcvbn'
+]
